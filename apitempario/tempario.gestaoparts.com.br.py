@@ -335,7 +335,7 @@ def apitempario_servico():
                     ser_idservico     = servicos['service']['id']
                     ser_tempo_minutos = servicos['minutes']
                     ser_tempo_horas   = servicos['minutes']/60
-                    ser_servico       = servicos['service']['name'].upper()
+                    ser_servico       = servicos['service']['name'].upper().replace("'", " ")
                     jMinutoTexto = objTempario.minuto_to_hora_relogio(ser_tempo_minutos)
                     # para testes ;)
                     #jMinutoTexto = objTempario.minuto_to_hora_relogio(120)
@@ -358,10 +358,10 @@ def apitempario_servico():
 
                     for pecas in servicos['pieces']:
                         pec_id = pecas['id']
-                        pec_peca = pecas['name'].upper()
+                        pec_peca = pecas['name'].upper().replace("'", "")
                         peca_quantidade = pecas['quantity']
                         array_parts = {"idpeca" : pec_id,
-                                       "peca" : pec_peca,
+                                       "peca" : pec_peca.upper(),
                                        "quantidade" : peca_quantidade}
                         listParts.append(array_parts)
 
@@ -379,7 +379,8 @@ def apitempario_servico():
                 print(cRetorno)
                 json_teste = json.dumps({"result" : cRetorno}, sort_keys=True, indent=1, ensure_ascii=False).encode('utf8')
                 return json_teste
-    except:
+    except Exception as ex:
+        print(ex)
         cRetorno = "Solicitação de serviço encontrada ou houve alguma falha no processamento"
         print(cRetorno)
         json_teste = json.dumps({"result": cRetorno}, sort_keys=True, indent=1, ensure_ascii=False).encode('utf8')
