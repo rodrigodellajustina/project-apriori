@@ -331,7 +331,10 @@ def apitempario_servico():
                 array_parts   = {}
                 listParts = list()
                 listRetorno = list()
+                nContService = 0
+                nContProduct = 0
                 for servicos in dados['result']['services_times']:
+                    nContService += 1
                     ser_idservico     = servicos['service']['id']
                     ser_tempo_minutos = servicos['minutes']
                     ser_tempo_horas   = servicos['minutes']/60
@@ -356,7 +359,9 @@ def apitempario_servico():
                     else:
                         ser_tempo_texto = str(jMinutoTexto['minuto']) + " minutos"
 
+                    nContProduct = 0
                     for pecas in servicos['pieces']:
+                        nContProduct += 1
                         pec_id = pecas['id']
                         pec_peca = pecas['name'].upper().replace("'", "")
                         peca_quantidade = pecas['quantity']
@@ -365,7 +370,16 @@ def apitempario_servico():
                                        "quantidade" : peca_quantidade}
                         listParts.append(array_parts)
 
+                        # limitador de retorno de produto por serviço por pesquisa
+                        if (nContService > 20):
+                            break
+
                     listRetorno.append({"idservico" : ser_idservico, "servico" : ser_servico, "tempo_minuto" : ser_tempo_minutos, "tempo_hora" : ser_tempo_horas,"tempo_texto" : ser_tempo_texto, "pecas" : listParts})
+
+                    # limitador de retorno de serviço por pesquisa
+                    if nContService > 40:
+                        break
+
 
                 #objTempario.armazenamodeloservico(listRetorno)
                 asyncio.run(objTempario.armazenamodeloservico(listRetorno, request.form.get("idmodelo")))
