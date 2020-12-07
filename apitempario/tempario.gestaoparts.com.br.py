@@ -225,6 +225,12 @@ def apitempario_veiculo():
     try:
         print(request.form.get("cnpj") + " --> " + request.form.get("usererp") + "... Requisitando Modelo de Veículo... " + request.form.get("fabricante") + "-" + request.form.get("modelobase") + "-" + request.form.get("modelo"))
         objTempario = Tempario(request.form.get("cnpj"))
+
+        if objTempario.ambiente == "Produção":
+            print(" ***** Busca em Produção ***** ")
+        else:
+            print(" ***** Busca em Homologação ***** ")
+
         if objTempario.token != "":
 
             curLogRequisicao = connpgtemp.cursor()

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<aiml version="1.0">
+    <meta name="author" content="PyES"/>
+    <meta name="language" content="pt-br"/>
+
+    <category>
+        <pattern>* OUVINDO</pattern>
+        <template>
+            <random>
+                <li>Sim, te ouço perfeitamente</li>
+                <li>Claro, năo sou surda</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* INICIAR</pattern>
+        <template>
+            <random>
+                <li>Já era pra ter começado, mané.</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* ACHANDO *</pattern>
+        <template>
+            <srai>ACHANDO</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>ACHANDO</pattern>
+        <template>
+            <random>
+                <li>kkk</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>ACHANDO *</pattern>
+        <template>
+            <srai>ACHANDO</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* ACHANDO</pattern>
+        <template>
+            <srai>ACHANDO</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>PROBLEMA</pattern>
+        <template>
+            <random>
+                <li>Oi?</li>
+                <li>Que?</li>
+                <li>Fale mais alto.</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>PIADA</pattern>
+        <template>
+            <random>
+                <li>Ouça esta. Vire ŕ direita. Vire ŕ esquerda. Agora volte sete quilômetros porque vocę está perdido.
+                </li>
+                <li>Atençăo. Radar: Estava ali atrás e eu só lembrei agora. Desculpe.</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* PIADA</pattern>
+        <template>
+            <srai>PIADA</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* RIR</pattern>
+        <template>
+            <srai>PIADA</srai>
+        </template>
+    </category>
+
+    <category>
+        <pattern>PYTHON</pattern>
+        <template>
+            <random>
+                <li>Linguagem maravilhosa.</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>* BEM</pattern>
+        <template>
+            por enquanto sim.
+        </template>
+    </category>
+
+    <category>
+        <pattern>PERGUNTA</pattern>
+        <template>
+            <random>
+                <li>Vocę vai me fazer outra pergunta?</li>
+            </random>
+        </template>
+    </category>
+
+    <category>
+        <pattern>TAREFA</pattern>
+        <template>
+            TAREFA
+        </template>
+    </category>
+
+    <category>
+        <pattern>* TAREFA</pattern>
+        <template>
+            <srai>TAREFA</srai>
+        </template>
+    </category>
+
+</aiml>
