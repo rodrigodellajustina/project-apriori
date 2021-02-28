@@ -29,11 +29,14 @@ CORS(app)
 statusservice = "[PRD] - Teste Consulta Serviço Tempário Gestão Parts"
 
 
+cSenhaBD = 'SSs1st3m@s2o!7'
+cSenhaBD = 'pgsql'
+
 try:
     #ambiente de produção
-    print('Conexão com PostgreSQL Ok')
-    connpgtemp = psycopg2.connect(host='localhost', user='postgres', password='pgsql', dbname='apitempario', port='5494')
+    connpgtemp = psycopg2.connect(host='localhost', user='postgres', password=cSenhaBD, dbname='apitempario', port='5494')
     connpgtemp.autocommit = True
+    print('Conexão com PostgreSQL Ok')
 except:
     print('Conexão com PostgreSQL Falhou')
     connpgtemp = 0
@@ -226,10 +229,12 @@ def apitempario_veiculo():
         print(request.form.get("cnpj") + " --> " + request.form.get("usererp") + "... Requisitando Modelo de Veículo... " + request.form.get("fabricante") + "-" + request.form.get("modelobase") + "-" + request.form.get("modelo"))
         objTempario = Tempario(request.form.get("cnpj"))
 
-        if objTempario.ambiente == "Produção":
+        if objTempario.ambiente == "PRODUÇÃO":
             print(" ***** Busca em Produção ***** ")
+            print(objTempario.ambiente)
         else:
             print(" ***** Busca em Homologação ***** ")
+            print(objTempario.ambiente)
 
         if objTempario.token != "":
 
@@ -267,7 +272,7 @@ def apitempario_veiculo():
             dfModelo = pd.DataFrame(listVeiculo, columns=["idmodelo", "fabricante", "modelo", "idsegmento", "status"])
             dfMarca = objTempario.getMarcaVeiculo()
             _marcaveiculo  = request.form.get("fabricante")
-            selecaomarca   = dfMarca.query("(marca == '"+_marcaveiculo+"' and idsegmento in("+str(objTempario.segmento).replace('[', '').replace(']', '')+"))")
+            selecaomarca   = dfMarca.query("(marca.str.contains('"+_marcaveiculo+"') and idsegmento in("+str(objTempario.segmento).replace('[', '').replace(']', '')+"))")
             # buscar pelo modelo completo
             dfModelo = objTempario.getModeloVeiculo(selecaomarca, modeloveiculo=request.form.get("modelo"))
 
@@ -426,7 +431,7 @@ if __name__ == "__main__":
     listMarca = list()
     listVeiculo = list()
     API_VERSION_TEMPARIO = "1"
-    print("SRV PRINCIAL Consulta Serviços Tempário Gestão Parts [ATIVO] Versão = 1.1")
+    print("SRV PRINCIAL Consulta Serviços Tempário Gestão Parts [ATIVO] Versão = 1.3")
     if production:
         # ambiente de produção
         serve(app, host='0.0.0.0', port=6006, threads=2)
