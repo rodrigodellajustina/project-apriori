@@ -128,7 +128,8 @@ class Tempario:
                     listVeiculo.append({"idmodelo": modelo["id"], "fabricante" : marca[1] , "modelo": modelo["name"].upper(), "idsegmento": sidsegmentoTempario})
 
                 dfModelo = pd.DataFrame(listVeiculo, columns=["idmodelo", "fabricante", "modelo", "idsegmento"])
-                return dfModelo
+
+            return dfModelo
         except:
             print("Erro ao Carregar Modelo da API Tempário")
             listVeiculo = list()
@@ -269,10 +270,17 @@ def apitempario_veiculo():
 
 
             dfMarca = pd.DataFrame(listMarca, columns=["marca", "idsegmento"])
+            dfMarca2 = pd.DataFrame(listMarca, columns=["marca", "idsegmento"])
             dfModelo = pd.DataFrame(listVeiculo, columns=["idmodelo", "fabricante", "modelo", "idsegmento", "status"])
             dfMarca = objTempario.getMarcaVeiculo()
             _marcaveiculo  = request.form.get("fabricante")
-            selecaomarca   = dfMarca.query("(marca.str.contains('"+_marcaveiculo+"') and idsegmento in("+str(objTempario.segmento).replace('[', '').replace(']', '')+"))")
+
+            #REMOVIDO NA VERSÃO 1.4 PARA BUSCAR POR SOMENTE MARCA EXATA, SERÁ
+            #selecaomarca   = dfMarca.query("(marca.str.contains('"+_marcaveiculo+"') and idsegmento in("+str(objTempario.segmento).replace('[', '').replace(']', '')+"))")
+
+            selecaomarca = dfMarca.query("(marca == '" + _marcaveiculo + "' and idsegmento in(" + str(objTempario.segmento).replace(
+                    '[', '').replace(']', '') + "))")
+
             # buscar pelo modelo completo
             dfModelo = objTempario.getModeloVeiculo(selecaomarca, modeloveiculo=request.form.get("modelo"))
 
@@ -295,7 +303,8 @@ def apitempario_veiculo():
             #json_teste = json.dumps(array_veiculo, sort_keys=True, indent=1, ensure_ascii=False).encode('utf8')
             json_teste = json.dumps(json.loads(dfModelo.reset_index().to_json(orient='records')), indent=2, sort_keys=True, ensure_ascii=False).encode('utf8')
             return json_teste
-    except:
+    except Exception as e:
+        print(e)
         cRetorno = "Solicitação de veículo não encontrada ou houve alguma falha no processamento"
         print(cRetorno)
         json_teste = json.dumps({"result": cRetorno}, sort_keys=True, indent=1, ensure_ascii=False).encode('utf8')
@@ -431,7 +440,7 @@ if __name__ == "__main__":
     listMarca = list()
     listVeiculo = list()
     API_VERSION_TEMPARIO = "1"
-    print("SRV PRINCIAL Consulta Serviços Tempário Gestão Parts [ATIVO] Versão = 1.3")
+    print("SRV PRINCIAL Consulta Serviços Tempário Gestão Parts [ATIVO] Versão = 1.4")
     if production:
         # ambiente de produção
         serve(app, host='0.0.0.0', port=6006, threads=2)
